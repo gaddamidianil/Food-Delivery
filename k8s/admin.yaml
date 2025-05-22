@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+  namespace: food-delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      containers:
+      - name: admin
+        image: gaddamidianil/food-delivery-admin:latest
+        ports:
+        - containerPort: 3001
+        env:
+          - name: REACT_APP_BACKEND_URL
+            value: http://backend-service:5001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+  namespace: food-delivery
+spec:
+  selector:
+    app.kubernetes.io/name: admin
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 80
+    targetPort: 3001

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: food-delivery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: gaddamidianil/food-delivery-backend:latest
+        ports:
+        - containerPort: 5001
+        env:
+          - name: MONGO_URL
+            value: http://mongo:27017/fooddb
+          - name: JWT_SECRET
+            value: "eb68187a06e41e6b0f30b693fe7cb6fa06e93b29fe075fcf22a71303fdaa0bf6b47078a7b758ddd389fe7bf7b974f44900b162dddc6ba17b0419769d9d36e28c1d94a19281ec19bc8ffeda6bad6e495086e81b24d47d348735441a4b29d60b388eb84e328f594a16ed85a1d6bae8e09835594c6d9e2fbd0e5387433f112903bb3f29ea3b6dfe2578b138aae60f70f17a68be094aec0a737868acfc6d94a669a756513dd4eb87111b3c255fdf54049843ec57133e30ea4b3530c1003191aeb4a0c0b560156050240ef06f671576dd965719b9a8a84327678c77847913e4f4af6986b7f166352b6eeadfe25d62c0266a0812abaf7bfee0c12a2ad61b08d22b63b2"
+          - name: STRIPE_SECRET_KEY
+            value: "abcd123"
+          - name: SALT
+            value: "5"
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: food-delivery
+spec:
+  selector:
+    app.kubernetes.io/name: backend
+  ports:
+  - name: name-of-service-port
+    protocol: TCP
+    port: 5001
+    targetPort: 5001

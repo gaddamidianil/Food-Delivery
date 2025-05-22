@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/fooddb
+      - JWT_SECRET="eb68187a06e41e6b0f30b693fe7cb6fa06e93b29fe075fcf22a71303fdaa0bf6b47078a7b758ddd389fe7bf7b974f44900b162dddc6ba17b0419769d9d36e28c1d94a19281ec19bc8ffeda6bad6e495086e81b24d47d348735441a4b29d60b388eb84e328f594a16ed85a1d6bae8e09835594c6d9e2fbd0e5387433f112903bb3f29ea3b6dfe2578b138aae60f70f17a68be094aec0a737868acfc6d94a669a756513dd4eb87111b3c255fdf54049843ec57133e30ea4b3530c1003191aeb4a0c0b560156050240ef06f671576dd965719b9a8a84327678c77847913e4f4af6986b7f166352b6eeadfe25d62c0266a0812abaf7bfee0c12a2ad61b08d22b63b2"
+      - STRIPE_SECRET_KEY="abcd123"
+      - SALT=5
+
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:5001
+
+  admin:
+    build: ./admin
+    ports:
+      - "3001:3001"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:5001
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
