@@ -29,6 +29,7 @@ metadata:
   name: frontend-service
   namespace: food-delivery
 spec:
+  type: LoadBalancer
   selector:
     app.kubernetes.io/name: frontend
   ports:
