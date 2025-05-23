@@ -25,7 +25,7 @@ jobs:
         run: |
           FOLDERS="admin backend frontend"
           for FOLDERS in $FOLDERS; do
-            docker build -t gaddamidianil/food-delivery-$FOLDERS:latest ./Food-Delivery/$FOLDERS
+            docker build -t gaddamidianil/food-delivery-$FOLDERS:latest ~/Food-Delivery/$FOLDERS
             docker push gaddamidianil/food-delivery-$FOLDERS:latest
           done
 
